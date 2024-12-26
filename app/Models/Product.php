@@ -14,6 +14,7 @@ class Product extends Model
         'brand_id',
         'name',
         'slug',
+        'images',
         'description',
         'price',
         'is_active',

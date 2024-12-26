@@ -66,7 +66,7 @@ class ProductResource extends Resource
                     ])->columns(2),
 
                     Section::make('Images')->schema([
-                        FileUpload::make('image')
+                        FileUpload::make('images')
                         ->multiple()
                         ->directory('products')
                         ->maxFiles(5)
@@ -96,7 +96,7 @@ class ProductResource extends Resource
                             ->relationship('brand', 'name'),
 
                         Section::make('Status')->schema([
-                           Toggle::make('status')
+                           Toggle::make('in_stock')
                             ->required()
                             ->default(true),
 
@@ -138,6 +138,9 @@ class ProductResource extends Resource
                     ->boolean(),
 
                 IconColumn::make('is_active')
+                    ->boolean(),
+
+                IconColumn::make('in_stock')
                     ->boolean(),
 
                 IconColumn::make('on_sale')
