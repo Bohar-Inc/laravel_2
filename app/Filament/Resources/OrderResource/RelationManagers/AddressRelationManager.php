@@ -73,7 +73,7 @@ class AddressRelationManager extends RelationManager
                 TextColumn::make('state'),
 
                 TextColumn::make('zip_code'),
-                
+
                 TextColumn::make('street_address'),
             ])
             ->filters([
