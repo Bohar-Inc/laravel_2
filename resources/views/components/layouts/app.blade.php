@@ -6,10 +6,14 @@
 
         <title>{{ $title ?? 'Filament' }}</title>
         @vite(['resources/css/app.css','resources/js/app.js'])
-        @livewireStyles
+        <livewire:styles/>
     </head>
     <body class="bg-slate-200 dark:bg-slate-700">
+    @livewire('partials.navbar')
+    <main>
         {{ $slot }}
-    @livewireScripts
+    </main>
+    @livewire('partials.footer')
+    <livewire:scripts />
     </body>
 </html>
