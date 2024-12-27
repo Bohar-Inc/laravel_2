@@ -165,7 +165,6 @@ class ProductResource extends Resource
                     ViewAction::make(),
                     EditAction::make(),
                     DeleteAction::make()
-
                 ])
             ])
             ->bulkActions([
