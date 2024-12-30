@@ -49,7 +49,7 @@ class BrandResource extends Resource
                     ]),
                     FileUpload::make('image')
                         ->image()
-                        ->directory('categories'),
+                        ->directory('brands'),
 
                     Toggle::make('is_active')
                         ->required()
@@ -66,7 +66,7 @@ class BrandResource extends Resource
                     ->searchable(),
 
                 Tables\Columns\ImageColumn::make('image'),
-                
+
                 Tables\Columns\TextColumn::make('slug')
                     ->searchable(),
 
