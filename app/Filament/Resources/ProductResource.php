@@ -132,6 +132,7 @@ class ProductResource extends Resource
                 ->toggleable(isToggledHiddenByDefault: true)
                 ->dateTime()
                 ->sortable(),
+
                 TextColumn::make('updated_at')
                 ->toggleable(isToggledHiddenByDefault: true)
                 ->dateTime()
