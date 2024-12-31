@@ -49,7 +49,7 @@ class BrandResource extends Resource
 
                     FileUpload::make('image')
                         ->image()
-                        ->directory('categories'),
+                        ->directory('brands'),
 
                     Toggle::make('is_active')
                         ->required()
@@ -87,7 +87,8 @@ class BrandResource extends Resource
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
-                ])            ])
+                ])
+            ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
