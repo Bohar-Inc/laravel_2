@@ -33,6 +33,6 @@ class Order extends Model
 
     public function address()
     {
-        return $this->hasOne(Product::class);
+        return $this->hasOne(Address::class);
     }
 }
