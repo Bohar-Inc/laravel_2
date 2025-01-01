@@ -35,11 +35,13 @@
                                 <h2 class="max-w-xl mb-6 text-2xl font-bold dark:text-gray-400 md:text-4xl">
                                     {{$product->name}}</h2>
                                 <p class="inline-block mb-6 text-4xl font-bold text-gray-700 dark:text-gray-400 ">
-                                    <span>{{Number::currency($product->price,'LKR')}}</span>
+                                    <span>{{\Illuminate\Support\Number::currency($product->price,'LKR')}}</span>
 {{--                                    <span class="text-base font-normal text-gray-500 line-through dark:text-gray-400">$1800.99</span>--}}
                                 </p>
                                 <p class="max-w-md text-gray-700 dark:text-gray-400">
-                                    {!! Str::markdown($product->description) !!}
+                                    @if(!empty($product->description))
+                                    {!! \Illuminate\Support\Str::markdown($product->description) !!}
+                                    @endif
                                 </p>
                             </div>
                             <div class="w-32 mb-8 ">
