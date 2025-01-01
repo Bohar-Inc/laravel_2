@@ -2,9 +2,12 @@
 
 namespace App\Livewire;
 
+use App\Helpers\CartManagement;
+use App\Livewire\Partials\Navbar;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -12,6 +15,7 @@ use Livewire\WithPagination;
 #[Title('Products - Bohar')]
 class ProductsPage extends Component
 {
+    use LivewireAlert;
     use withPagination;
     #[Url]
     public $selected_categories=[];
@@ -29,6 +33,19 @@ class ProductsPage extends Component
 
     #[Url]
     public $sort = 'latest';
+
+    public function addToCart($product_id)
+    {
+        $total_count = CartManagement::addItemToCart($product_id);
+
+        $this->dispatch('update-cart-count', total_count: $total_count)->to(Navbar::class);
+
+        $this->alert('success','Product added to cart successfully!', [
+            'position' =>  'bottom-end',
+            'timer' =>  3000,
+            'toast' =>  true,
+        ]);
+    }
 
     public function render()
     {
