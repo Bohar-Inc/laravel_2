@@ -28,6 +28,9 @@ class ProductsPage extends Component
     #[Url]
     public $price_range=300000;
 
+    #[Url]
+    public $sort;
+
     use WithPagination;
     public function render()
     {
@@ -47,6 +50,13 @@ class ProductsPage extends Component
 
         if ($this->price_range) {
             $productQuery->whereBetween('price',[0,$this->price_range]);
+        }
+
+        if ($this->sort == 'latest') {
+            $productQuery->latest();
+        }
+        if ($this->sort == 'price') {
+            $productQuery->orderBy('price');
         }
         $brands=Brand::where('is_active',1)->get(['id','name','slug']);
         $categories=Category::where('is_active',1)->get(['id','name','slug']);
