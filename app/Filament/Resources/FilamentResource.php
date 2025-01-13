@@ -29,21 +29,22 @@ class FilamentResource extends Resource
         return $form
             ->schema([
 
-                TextInput::make('name')
-                ->label('Route Name')
-                ->maxLength(50)
-                ->required(),
+                Forms\Components\Section::make()->schema([
+                    TextInput::make('name')
+                        ->label('Route Name')
+                        ->maxLength(50)
+                        ->required(),
+                ])->columnSpan(1),
 
+                Forms\Components\Card::make()->schema([
                 Map::make('route_coordinates')
                     ->label('Location')
                     ->columnSpanFull()
                     ->defaultLocation(latitude: 40.4168, longitude: -3.7038)
-
                     ->extraStyles([
-                        'min-height: 100vh',
+                        'min-height: 80vh',
                         'border-radius: 10px'
                     ])
-
                     ->liveLocation(true, true, 5000)
                     ->showMarker()
                     ->markerColor("#22c55eff")
@@ -63,18 +64,13 @@ class FilamentResource extends Resource
                     ->drawCircleMarker()
                     ->rotateMode()
                     ->clickable(true) //click to move marker
-                    ->drawMarker()
-                    ->drawPolygon()
                     ->drawPolyline()
-                    ->drawCircle()
                     ->dragMode()
-                    ->cutPolygon()
-                    ->editPolygon()
                     ->deleteLayer()
                     ->setColor('#3388ff')
                     ->setFilledColor('#cad9ec')
-
-            ]);
+                ]),
+            ])->columns(3);
     }
 
     public static function table(Table $table): Table
@@ -95,7 +91,8 @@ class FilamentResource extends Resource
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make(),
-                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\ViewAction::make()
                 ])
             ])
             ->bulkActions([
