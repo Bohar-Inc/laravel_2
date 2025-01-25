@@ -40,7 +40,7 @@ class FilamentResource extends Resource
                 Map::make('route_coordinates')
                     ->label('Location')
                     ->columnSpanFull()
-                    ->defaultLocation(latitude: 40.4168, longitude: -3.7038)
+                    ->defaultLocation(latitude: 9.738236952079378,  longitude: 80.05083788036576)
                     ->extraStyles([
                         'min-height: 80vh',
                         'border-radius: 10px'
