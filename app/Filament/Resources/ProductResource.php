@@ -85,6 +85,10 @@ class ProductResource extends Resource
                         ->relationship('category', 'name')
                         ->required()
                         ->preload()
+                            ->createOptionForm([
+                                TextInput::make('name')
+                                ->required()
+                            ])
                         ->searchable(),
 
                         Select::make('brand_id')

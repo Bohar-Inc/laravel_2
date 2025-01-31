@@ -1,21 +1,30 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="utf-8" />
 
-        <title>{{ $title ?? 'Laravel Filament' }}</title>
-        @vite(['resources/css/app.css','resources/js/app.js'])
-        @livewireStyles
+        <meta name="application-name" content="{{ config('app.name') }}" />
+        <meta name="csrf-token" content="{{ csrf_token() }}" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <title>{{ config('app.name') }}</title>
+
+        <style>
+            [x-cloak] {
+                display: none !important;
+            }
+        </style>
+
+        @filamentStyles
+        @vite('resources/css/app.css')
     </head>
-    <body class="bg-slate-200 dark:bg-slate-700">
-    @livewire('partials.navbar')
-        <main>
-            {{ $slot }}
-        </main>
-    @livewire('partials.footer')
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <x-livewire-alert::scripts />
-    @livewireScripts
+
+    <body class="antialiased">
+        {{ $slot }}
+
+        @livewire('notifications')
+
+        @filamentScripts
+        @vite('resources/js/app.js')
     </body>
 </html>

@@ -38,6 +38,7 @@ class FilamentResource extends Resource
 
                 Forms\Components\Card::make()->schema([
                 Map::make('route_coordinates')
+                    ->required()
                     ->label('Location')
                     ->columnSpanFull()
                     ->defaultLocation(latitude: 9.738236952079378,  longitude: 80.05083788036576)
