@@ -20,6 +20,9 @@ use Filament\Forms\Components\ToggleButtons;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
+use Filament\Infolists\Components\Grid;
+use Filament\Infolists\Components\ImageEntry;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\SelectColumn;
@@ -28,6 +31,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Number;
+use Filament\Infolists\Infolist;
 
 class OrderResource extends Resource
 {
@@ -236,6 +240,65 @@ class OrderResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                \Filament\Infolists\Components\Section::make('Order Information')->schema([
+                    Grid::make()->schema([
+                        TextEntry::make('user.name')
+                            ->label('Username'),
+                        TextEntry::make('grand_total')
+                            ->prefix('LKR'),
+                        TextEntry::make('payment_method'),
+                        TextEntry::make('payment_status'),
+                        TextEntry::make('shipping_method'),
+                        TextEntry::make('status')
+                            ->badge()
+                            ->color(fn(string $state):string=> match ($state){
+                                'new'=>'info',
+                                'processing'=>'warning',
+                                'shipped'=>'info',
+                                'delivered'=>'success',
+                                'cancelled'=>'danger',
+                            })
+                            ->icon(fn(string $state):string=> match ($state){
+                                'new'=>'heroicon-m-sparkles',
+                                'processing'=>'heroicon-m-arrow-path',
+                                'shipped'=>'heroicon-m-truck',
+                                'delivered'=>'heroicon-m-check-badge',
+                                'cancelled'=>'heroicon-m-x-circle',
+                            }),
+                    ])->columns(3),
+                ])->columnSpan(3),
+                \Filament\Infolists\Components\Section::make('Product Image')->schema([
+                    ImageEntry::make('')
+                        ->getStateUsing(function ($record) {
+                            // Retrieve the first order item.
+                            $orderItem = $record->items->first();
+
+                            // Check if the order item and its associated product exist.
+                            if ($orderItem && $orderItem->product) {
+                                // Get the images from the product.
+                                $images = $orderItem->product->images;
+
+                                // If the image attribute isn’t already an array, decode it.
+                                if (!is_array($images)) {
+                                    $images = json_decode($images, true);
+                                }
+
+                                // Return the first image (index 0) or null if it doesn’t exist.
+                                return $images[0] ?? null;
+                            }
+
+                            return null;
+                        })
+                    ->alignCenter()
+                    ->width('100%'),
+                ])->columnSpan(1)
+
+            ])->columns(4);
     }
 
     public static function getRelations(): array

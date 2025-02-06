@@ -12,12 +12,16 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Forms\Set;
+use Filament\Infolists\Components\IconEntry;
+use Filament\Infolists\Components\ImageEntry;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
+use Filament\Infolists\Infolist;
 
 class BrandResource extends Resource
 {
@@ -92,6 +96,30 @@ class BrandResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+            ]);
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                \Filament\Infolists\Components\Section::make('Order Information')->schema([
+                    \Filament\Infolists\Components\Grid::make()->schema([
+                        TextEntry::make('name')
+                            ->label('Brand Name'),
+                        TextEntry::make('slug')
+                            ->label('Slug Name'),
+                        TextEntry::make('created_at'),
+                        TextEntry::make('updated_at'),
+                        IconEntry::make('is_active')
+                            ->boolean()
+                    ])->columnSpan(3),
+                    \Filament\Infolists\Components\Grid::make()->schema([
+                        ImageEntry::make('image'),
+                    ])->columnSpan(1)
+
+                ])->columns(4)
+
             ]);
     }
 

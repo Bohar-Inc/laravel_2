@@ -6,6 +6,8 @@ use App\Filament\Exports\UserExporter;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
+
+use Barryvdh\DomPDF\Facade\Pdf;
 use Filament\Forms;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\TextInput;
@@ -14,9 +16,11 @@ use Filament\Pages\Page;
 use Filament\Resources\Pages\CreateRecord;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class UserResource extends Resource
@@ -58,6 +62,8 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('id')
+                ->searchable(),
                 TextColumn::make('name')
                 ->searchable(),
                 TextColumn::make('email')
@@ -80,7 +86,18 @@ class UserResource extends Resource
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
-                ]),
+                    Action::make('Download PDF')
+                        ->icon('heroicon-o-document-arrow-down')
+                        ->action(fn (Model $record) => static::exportPdf($record))
+                        ->color('success'),
+        ]),
+                Action::make('Export All as PDF')
+                    ->icon('heroicon-o-document-arrow-down')
+                    ->action(function () {
+                        $users = User::all();
+                        $pdf = Pdf::loadView('pdf.all_users', compact('users'));
+                        return response()->streamDownload(fn () => print($pdf->output()), 'Users_List.pdf');
+                    })
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -88,7 +105,11 @@ class UserResource extends Resource
                 ]),
             ]);
     }
-
+    public static function exportPdf(Model $record)
+    {
+        $pdf = PDF::loadView('pdf.user', ['user' => $record]); // Ensure 'pdf.user' exists
+        return response()->streamDownload(fn () => print($pdf->output()), 'User_Details.pdf');
+    }
     public static function getRelations(): array
     {
         return [

@@ -51,7 +51,7 @@ class AdminPanelProvider extends PanelProvider
                 ->icon('heroicon-o-cog-6-tooth'),
                 'logout'=>MenuItem::make()->label('Log Out')
             ])
-            ->breadcrumbs(false)
+            ->breadcrumbs()
             ->font('Poppins')
             ->sidebarFullyCollapsibleOnDesktop()
             ->middleware([
